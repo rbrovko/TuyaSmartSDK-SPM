@@ -197,6 +197,26 @@ create_arm64_simulator_slice() {
   rm -f "$temp_arm64"
 }
 
+# Fix missing dSYMs paths declared in Info.plist
+fix_dsyms_paths() {
+  local xcframework_path="$1"
+  
+  find "$xcframework_path" -name "Info.plist" | while read plist; do
+    local slice_dir=$(dirname "$plist")
+    
+    # Check if Info.plist declares DebugSymbolsPath
+    local dsyms_rel=$(/usr/libexec/PlistBuddy -c "Print :DebugSymbolsPath" "$plist" 2>/dev/null || true)
+    
+    if [ -n "$dsyms_rel" ]; then
+      local dsyms_abs="$slice_dir/$dsyms_rel"
+      if [ ! -d "$dsyms_abs" ]; then
+        echo "   📁 Creating missing dSYMs dir: $dsyms_abs"
+        mkdir -p "$dsyms_abs"
+      fi
+    fi
+  done
+}
+
 # Function to fix code signing
 fix_codesign() {
   local framework_path="$1"
@@ -262,6 +282,7 @@ for framework_name in "${XCFRAMEWORKS[@]}"; do
     strip_bitcode "$framework"
   done
 
+  fix_dsyms_paths "$copied_xcf"
   # Create arm64 simulator support
   create_arm64_simulator_slice "$copied_xcf"
 
