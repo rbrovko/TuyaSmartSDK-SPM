@@ -9,177 +9,61 @@ let package = Package(
     products: [
         .library(
             name: "TuyaSmartActivatorKit",
-            targets: ["TuyaSmartActivatorKitWrapper"]
+            targets: ["TuyaSmartActivatorKit"]
         )
     ],
     targets: [
-        // Binary targets
         .binaryTarget(
-            name: "TYMbedtlsBinary",
-            path: "Frameworks/TYMbedtls.xcframework"
+            name: "TuyaSmartActivatorKit",
+            path: "Frameworks/TuyaSmartActivatorKit.xcframework"
         ),
         .binaryTarget(
-            name: "TuyaSmartQUICBinary",
-            path: "Frameworks/TuyaSmartQUIC.xcframework"
-        ),
-        .binaryTarget(
-            name: "TuyaSmartUtilBinary",
-            path: "Frameworks/TuyaSmartUtil.xcframework"
-        ),
-        .binaryTarget(
-            name: "TuyaSmartSocketChannelKitBinary",
-            path: "Frameworks/TuyaSmartSocketChannelKit.xcframework"
-        ),
-        .binaryTarget(
-            name: "TuyaSmartNetworkKitBinary",
-            path: "Frameworks/TuyaSmartNetworkKit.xcframework"
-        ),
-        .binaryTarget(
-            name: "TuyaSmartMQTTChannelKitBinary",
-            path: "Frameworks/TuyaSmartMQTTChannelKit.xcframework"
-        ),
-        .binaryTarget(
-            name: "TuyaSmartBaseKitBinary",
+            name: "TuyaSmartBaseKit",
             path: "Frameworks/TuyaSmartBaseKit.xcframework"
         ),
         .binaryTarget(
-            name: "TuyaSmartPairingCoreKitBinary",
-            path: "Frameworks/TuyaSmartPairingCoreKit.xcframework"
-        ),
-        .binaryTarget(
-            name: "TuyaSmartDeviceCoreKitBinary",
-            path: "Frameworks/TuyaSmartDeviceCoreKit.xcframework"
-        ),
-        .binaryTarget(
-            name: "TuyaSmartShareKitBinary",
-            path: "Frameworks/TuyaSmartShareKit.xcframework"
-        ),
-        .binaryTarget(
-            name: "TuyaSmartDeviceKitBinary",
+            name: "TuyaSmartDeviceKit",
             path: "Frameworks/TuyaSmartDeviceKit.xcframework"
         ),
         .binaryTarget(
-            name: "TuyaSmartActivatorCoreKitBinary",
+            name: "TuyaSmartActivatorCoreKit",
             path: "Frameworks/TuyaSmartActivatorCoreKit.xcframework"
         ),
         .binaryTarget(
-            name: "TuyaSmartActivatorKitBinary",
-            path: "Frameworks/TuyaSmartActivatorKit.xcframework"
-        ),
-        
-        // Wrapper targets with dependencies
-        .target(
-            name: "TYMbedtls",
-            dependencies: ["TYMbedtlsBinary"],
-            path: "Sources/TYMbedtls"
-        ),
-        .target(
-            name: "TuyaSmartQUIC",
-            dependencies: ["TuyaSmartQUICBinary"],
-            path: "Sources/TuyaSmartQUIC"
-        ),
-        .target(
-            name: "TuyaSmartUtil",
-            dependencies: [
-                "TuyaSmartUtilBinary",
-                "TYMbedtls"
-            ],
-            path: "Sources/TuyaSmartUtil"
-        ),
-        .target(
-            name: "TuyaSmartSocketChannelKit",
-            dependencies: [
-                "TuyaSmartSocketChannelKitBinary",
-                "TuyaSmartUtil"
-            ],
-            path: "Sources/TuyaSmartSocketChannelKit"
-        ),
-        .target(
-            name: "TuyaSmartNetworkKit",
-            dependencies: [
-                "TuyaSmartNetworkKitBinary",
-                "TuyaSmartUtil"
-            ],
-            path: "Sources/TuyaSmartNetworkKit"
-        ),
-        .target(
-            name: "TuyaSmartMQTTChannelKit",
-            dependencies: [
-                "TuyaSmartMQTTChannelKitBinary",
-                "TuyaSmartQUIC",
-                "TuyaSmartUtil"
-            ],
-            path: "Sources/TuyaSmartMQTTChannelKit"
-        ),
-        .target(
-            name: "TuyaSmartBaseKit",
-            dependencies: [
-                "TuyaSmartBaseKitBinary",
-                "TuyaSmartMQTTChannelKit",
-                "TuyaSmartNetworkKit",
-                "TuyaSmartUtil"
-            ],
-            path: "Sources/TuyaSmartBaseKit"
-        ),
-        .target(
-            name: "TuyaSmartPairingCoreKit",
-            dependencies: [
-                "TuyaSmartPairingCoreKitBinary",
-                "TuyaSmartMQTTChannelKit",
-                "TuyaSmartSocketChannelKit",
-                "TuyaSmartUtil"
-            ],
-            path: "Sources/TuyaSmartPairingCoreKit"
-        ),
-        .target(
             name: "TuyaSmartDeviceCoreKit",
-            dependencies: [
-                "TuyaSmartDeviceCoreKitBinary",
-                "TuyaSmartBaseKit",
-                "TuyaSmartMQTTChannelKit",
-                "TuyaSmartSocketChannelKit",
-                "TuyaSmartUtil"
-            ],
-            path: "Sources/TuyaSmartDeviceCoreKit"
+            path: "Frameworks/TuyaSmartDeviceCoreKit.xcframework"
         ),
-        .target(
+        .binaryTarget(
+            name: "TuyaSmartMQTTChannelKit",
+            path: "Frameworks/TuyaSmartMQTTChannelKit.xcframework"
+        ),
+        .binaryTarget(
+            name: "TuyaSmartNetworkKit",
+            path: "Frameworks/TuyaSmartNetworkKit.xcframework"
+        ),
+        .binaryTarget(
+            name: "TuyaSmartPairingCoreKit",
+            path: "Frameworks/TuyaSmartPairingCoreKit.xcframework"
+        ),
+        .binaryTarget(
+            name: "TuyaSmartQUIC",
+            path: "Frameworks/TuyaSmartQUIC.xcframework"
+        ),
+        .binaryTarget(
             name: "TuyaSmartShareKit",
-            dependencies: [
-                "TuyaSmartShareKitBinary",
-                "TuyaSmartBaseKit",
-                "TuyaSmartDeviceCoreKit"
-            ],
-            path: "Sources/TuyaSmartShareKit"
+            path: "Frameworks/TuyaSmartShareKit.xcframework"
         ),
-        .target(
-            name: "TuyaSmartDeviceKit",
-            dependencies: [
-                "TuyaSmartDeviceKitBinary",
-                "TuyaSmartBaseKit",
-                "TuyaSmartDeviceCoreKit",
-                "TuyaSmartNetworkKit",
-                "TuyaSmartShareKit"
-            ],
-            path: "Sources/TuyaSmartDeviceKit"
+        .binaryTarget(
+            name: "TuyaSmartSocketChannelKit",
+            path: "Frameworks/TuyaSmartSocketChannelKit.xcframework"
         ),
-        .target(
-            name: "TuyaSmartActivatorCoreKit",
-            dependencies: [
-                "TuyaSmartActivatorCoreKitBinary",
-                "TuyaSmartDeviceCoreKit",
-                "TuyaSmartPairingCoreKit",
-                "TuyaSmartUtil"
-            ],
-            path: "Sources/TuyaSmartActivatorCoreKit"
+        .binaryTarget(
+            name: "TuyaSmartUtil",
+            path: "Frameworks/TuyaSmartUtil.xcframework"
         ),
-        .target(
-            name: "TuyaSmartActivatorKitWrapper",
-            dependencies: [
-                "TuyaSmartActivatorKitBinary",
-                "TuyaSmartActivatorCoreKit",
-                "TuyaSmartDeviceKit"
-            ],
-            path: "Sources/TuyaSmartActivatorKit"
+        .binaryTarget(
+            name: "TYMbedtls",
+            path: "Frameworks/TYMbedtls.xcframework"
         )
     ]
 )
