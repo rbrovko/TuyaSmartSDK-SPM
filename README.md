@@ -128,7 +128,12 @@ end
 
 - macOS with Xcode Command Line Tools
 - CocoaPods installed: `sudo gem install cocoapods`
-- Git LFS (optional, for large binaries): `brew install git-lfs`
+- bash > 4.0 - Install bash via Homebrew:: `brew install bash`. Check
+
+```bash
+/opt/homebrew/bin/bash --version
+# GNU bash, version 5.x
+```
 
 ### Updating to New Tuya SDK Version
 
@@ -196,10 +201,14 @@ This script will:
 ✅ Verification complete
 ```
 
-#### 4. Creating ZIP archives and generating Package.swift for GitHub Release
+#### 4. Create ZIP archives and generate Package.swift for GitHub Release
 
 ```bash
 ./Scripts/create_release.sh
+
+# Tag the release - tmp tag for check
+git tag 4.1.0
+git push origin 4.1.0
 ```
 
 1. Go to **Releases → Draft a new release**
@@ -228,10 +237,6 @@ Follow Tuya's version numbers directly:
 
 If you need to patch the wrapper itself without a new Tuya version:
 - Use pre-release tags: `4.0.0-patch1`, `4.0.0-patch2`
-
-Next steps:
-  1. Create a GitHub Release with tag '$VERSION'
-  2. Upload all files from ./Archives/ as release assets
 
 #### 5. Test Locally
 
@@ -266,12 +271,16 @@ git add Scripts/prepare_frameworks.sh  # If you updated version
 # Commit
 git commit -m "Update TuyaSmartActivatorKit to 4.1.0 with arm64 simulator support"
 
-# Tag the release
+# Delete temp tag
+git tag -d 4.1.0
+git push origin --delete 4.1.0
+
+# Create new tag
 git tag 4.1.0
 
 # Push
 git push origin master
-git push origin --tags
+git push origin 4.1.0
 ```
 
 ## Troubleshooting
