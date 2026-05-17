@@ -49,7 +49,7 @@ This package wraps Tuya's CocoaPods-only SDK as binary XCFrameworks for use with
    ```
 3. Select version rule (recommend: **Up to Next Major Version**)
 4. Click **Add Package**
-5. Select **TuyaSmartSDK** library and add to your target
+5. Select **TuyaSmartActivatorKit-SMP** library and add to your target
 
 #### Option 2: Package.swift
 
@@ -67,7 +67,7 @@ Then add to your target:
 .target(
     name: "YourApp",
     dependencies: [
-        .product(name: "TuyaSmartSDK", package: "TuyaSmartSDK-SPM")
+        .product(name: "TuyaSmartActivatorKit-SMP", package: "TuyaSmartSDK-SPM")
     ]
 )
 ```
@@ -78,11 +78,22 @@ Import frameworks in your Swift code:
 
 ```swift
 import TuyaSmartActivatorKit
-import TuyaSmartDeviceKit
-import TuyaSmartBaseKit
 
-// Use Tuya SDK as normal
-TuyaSmartSDK.sharedInstance().start(withAppKey: "your-app-key", secretKey: "your-secret-key")
+/*
+{
+  "secret":"reKE",
+  "region":"AY",
+  "token":"nqMwn1Nd"
+}
+*/
+
+// startConfig token = region + token + secret
+// example. 
+let ssid = ""
+let password = ""
+let token = "AYnqMwn1NdreKE" // AYnqMwn1NdreKE = "AY" + "nqMwn1Nd" + "reKE" 
+TuyaSmartActivator.sharedInstance().startConfigWiFi(.EZ, ssid: ssid, password: password, token: token, timeout: 100)
+
 ```
 
 ## Migrating from CocoaPods
@@ -185,7 +196,44 @@ This script will:
 ✅ Verification complete
 ```
 
-#### 4. Test Locally
+#### 4. Creating ZIP archives and generating Package.swift for GitHub Release
+
+```bash
+./Scripts/create_release.sh
+```
+
+1. Go to **Releases → Draft a new release**
+2. Select tag `4.1.0`
+3. Title: `TuyaSmartActivatorKit 4.1.0`
+4. Description:
+   ```markdown
+   ## Changes
+   - Updated TuyaSmartActivatorKit to 4.1.0
+   - Native arm64 simulator support
+   - Bitcode stripped
+   
+   ## Installation
+   ```swift
+   .package(url: "https://github.com/rbrovko/TuyaSmartSDK-SPM.git", from: "4.1.0")
+   ```
+   ```
+5. Upload all files from ./Archives/ as release assets
+6. Publish release
+
+### Version Numbering
+
+Follow Tuya's version numbers directly:
+- TuyaSmartActivatorKit `4.0.0` → Tag `4.0.0`
+- TuyaSmartActivatorKit `4.1.0` → Tag `4.1.0`
+
+If you need to patch the wrapper itself without a new Tuya version:
+- Use pre-release tags: `4.0.0-patch1`, `4.0.0-patch2`
+
+Next steps:
+  1. Create a GitHub Release with tag '$VERSION'
+  2. Upload all files from ./Archives/ as release assets
+
+#### 5. Test Locally
 
 Before releasing, test in a real project:
 
@@ -208,11 +256,11 @@ Verify:
 - ✅ Runs on arm64 simulator
 - ✅ No `EXCLUDED_ARCHS` needed
 
-#### 5. Commit and Tag
+#### 6. Commit and Tag
 
 ```bash
 # Stage changes
-git add Frameworks/
+git add Package.swift
 git add Scripts/prepare_frameworks.sh  # If you updated version
 
 # Commit
@@ -220,40 +268,11 @@ git commit -m "Update TuyaSmartActivatorKit to 4.1.0 with arm64 simulator suppor
 
 # Tag the release
 git tag 4.1.0
-git tag -a 4.1.0 -m "TuyaSmartActivatorKit 4.1.0 - arm64 simulator support"
 
 # Push
 git push origin master
 git push origin --tags
 ```
-
-#### 6. Create GitHub Release (Optional)
-
-1. Go to **Releases → Draft a new release**
-2. Select tag `4.1.0`
-3. Title: `TuyaSmartActivatorKit 4.1.0`
-4. Description:
-   ```markdown
-   ## Changes
-   - Updated TuyaSmartActivatorKit to 4.1.0
-   - Native arm64 simulator support
-   - Bitcode stripped
-   
-   ## Installation
-   ```swift
-   .package(url: "https://github.com/rbrovko/TuyaSmartSDK-SPM.git", from: "4.1.0")
-   ```
-   ```
-5. Publish release
-
-### Version Numbering
-
-Follow Tuya's version numbers directly:
-- TuyaSmartActivatorKit `4.0.0` → Tag `4.0.0`
-- TuyaSmartActivatorKit `4.1.0` → Tag `4.1.0`
-
-If you need to patch the wrapper itself without a new Tuya version:
-- Use pre-release tags: `4.0.0-patch1`, `4.0.0-patch2`
 
 ## Troubleshooting
 
@@ -301,41 +320,6 @@ You have a device-only binary in the simulator framework. Re-run preparation scr
 ```
 
 This error should not occur if arm64 simulator slices are properly created.
-
-### Frameworks too large for Git
-
-**Option 1: Git LFS** (Recommended)
-
-```bash
-# Install
-brew install git-lfs
-git lfs install
-
-# Track XCFrameworks
-git lfs track "Frameworks/**/*.xcframework/**"
-git add .gitattributes
-git commit -m "Add Git LFS tracking"
-
-# Push (will use LFS)
-git push
-```
-
-**Option 2: Binary target with checksum**
-
-Use remote binary targets in `Package.swift`:
-
-```swift
-.binaryTarget(
-    name: "TuyaSmartUtil",
-    url: "https://github.com/rbrovko/TuyaSmartSDK-SPM/releases/download/4.0.0/TuyaSmartUtil.xcframework.zip",
-    checksum: "sha256-checksum-here"
-)
-```
-
-Generate checksum:
-```bash
-swift package compute-checksum TuyaSmartUtil.xcframework.zip
-```
 
 ## Technical Details
 
@@ -402,7 +386,7 @@ Contributions welcome for:
 
 - **Tuya Smart SDK**: [tuya-pod-specs](https://github.com/tuya/tuya-pod-specs)
 - **Binary patching technique**: Inspired by community solutions for arm64 simulator support
-- **Maintained by**: [Roman Brovko]
+- **Maintained by**: [Roman Brovko](https://github.com/rbrovko)
 
 ## [CHANGELOG](CHANGELOG.md)
 
