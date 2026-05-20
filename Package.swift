@@ -8,25 +8,33 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "TuyaSmartActivatorKit-SMP",
+            name: "TuyaSmartActivatorKit",
             targets: [
-                "TuyaSmartActivatorKit",
-                "TuyaSmartBaseKit",
-                "TuyaSmartDeviceKit",
-                "TuyaSmartActivatorCoreKit",
-                "TuyaSmartDeviceCoreKit",
-                "TuyaSmartMQTTChannelKit",
-                "TuyaSmartNetworkKit",
-                "TuyaSmartPairingCoreKit",
-                "TuyaSmartQUIC",
-                "TuyaSmartShareKit",
-                "TuyaSmartSocketChannelKit",
-                "TuyaSmartUtil",
-                "TYMbedtls"
+                "TuyaSmartActivatorCoreKitWrapper",
+                "TuyaSmartActivatorKitWrapper",
+                "TuyaSmartBaseKitWrapper",
+                "TuyaSmartDeviceCoreKitWrapper",
+                "TuyaSmartDeviceKitWrapper",
+                "TuyaSmartMQTTChannelKitWrapper",
+                "TuyaSmartNetworkKitWrapper",
+                "TuyaSmartPairingCoreKitWrapper",
+                "TuyaSmartQUICWrapper",
+                "TuyaSmartShareKitWrapper",
+                "TuyaSmartSocketChannelKitWrapper",
+                "TuyaSmartUtilWrapper",
+                "TYMbedtlsWrapper"
             ]
         )
     ],
+    dependencies: [
+        .package(url: "https://github.com/rbrovko/YYModel-SPM.git", from: "1.0.4")
+    ],
     targets: [
+        .binaryTarget(
+            name: "TuyaSmartActivatorCoreKit",
+            url: "https://github.com/rbrovko/TuyaSmartSDK-SPM/releases/download/4.0.0/TuyaSmartActivatorCoreKit.xcframework.zip",
+            checksum: "f57b88e98f5b8d14dfd650642f3cb21e145dac49749e9e974975073def59e1f0"
+        ),
         .binaryTarget(
             name: "TuyaSmartActivatorKit",
             url: "https://github.com/rbrovko/TuyaSmartSDK-SPM/releases/download/4.0.0/TuyaSmartActivatorKit.xcframework.zip",
@@ -38,19 +46,14 @@ let package = Package(
             checksum: "f45124bc8cd05647c5ac74d7914736e85c1ac47e7a56d773da46eaf03cb822fb"
         ),
         .binaryTarget(
-            name: "TuyaSmartDeviceKit",
-            url: "https://github.com/rbrovko/TuyaSmartSDK-SPM/releases/download/4.0.0/TuyaSmartDeviceKit.xcframework.zip",
-            checksum: "a6828d1ef04912d1cd14b1d7e0111fa61a536d32fb438c7e76265a0ef8f72a5a"
-        ),
-        .binaryTarget(
-            name: "TuyaSmartActivatorCoreKit",
-            url: "https://github.com/rbrovko/TuyaSmartSDK-SPM/releases/download/4.0.0/TuyaSmartActivatorCoreKit.xcframework.zip",
-            checksum: "f57b88e98f5b8d14dfd650642f3cb21e145dac49749e9e974975073def59e1f0"
-        ),
-        .binaryTarget(
             name: "TuyaSmartDeviceCoreKit",
             url: "https://github.com/rbrovko/TuyaSmartSDK-SPM/releases/download/4.0.0/TuyaSmartDeviceCoreKit.xcframework.zip",
             checksum: "81e299af49ef08dd1e0f4ddcd4cf6a274050533ee0670ec89e6c0615138c745a"
+        ),
+        .binaryTarget(
+            name: "TuyaSmartDeviceKit",
+            url: "https://github.com/rbrovko/TuyaSmartSDK-SPM/releases/download/4.0.0/TuyaSmartDeviceKit.xcframework.zip",
+            checksum: "a6828d1ef04912d1cd14b1d7e0111fa61a536d32fb438c7e76265a0ef8f72a5a"
         ),
         .binaryTarget(
             name: "TuyaSmartMQTTChannelKit",
@@ -91,6 +94,110 @@ let package = Package(
             name: "TYMbedtls",
             url: "https://github.com/rbrovko/TuyaSmartSDK-SPM/releases/download/4.0.0/TYMbedtls.xcframework.zip",
             checksum: "53b11d11a770eb33481ccd77af9711e67d5765c4d6f34cc7281a64a0fa753562"
+        ),
+        .target(
+            name: "TuyaSmartActivatorCoreKitWrapper",
+            dependencies: [
+                "TuyaSmartActivatorCoreKit",
+                .product(name: "YYModel", package: "YYModel-SPM")
+            ],
+            path: "Sources/TuyaSmartActivatorCoreKitWrapper"
+        ),
+        .target(
+            name: "TuyaSmartActivatorKitWrapper",
+            dependencies: [
+                "TuyaSmartActivatorKit",
+                .product(name: "YYModel", package: "YYModel-SPM")
+            ],
+            path: "Sources/TuyaSmartActivatorKitWrapper"
+        ),
+        .target(
+            name: "TuyaSmartBaseKitWrapper",
+            dependencies: [
+                "TuyaSmartBaseKit",
+                .product(name: "YYModel", package: "YYModel-SPM")
+            ],
+            path: "Sources/TuyaSmartBaseKitWrapper"
+        ),
+        .target(
+            name: "TuyaSmartDeviceCoreKitWrapper",
+            dependencies: [
+                "TuyaSmartDeviceCoreKit",
+                .product(name: "YYModel", package: "YYModel-SPM")
+            ],
+            path: "Sources/TuyaSmartDeviceCoreKitWrapper"
+        ),
+        .target(
+            name: "TuyaSmartDeviceKitWrapper",
+            dependencies: [
+                "TuyaSmartDeviceKit",
+                .product(name: "YYModel", package: "YYModel-SPM")
+            ],
+            path: "Sources/TuyaSmartDeviceKitWrapper"
+        ),
+        .target(
+            name: "TuyaSmartMQTTChannelKitWrapper",
+            dependencies: [
+                "TuyaSmartMQTTChannelKit",
+                .product(name: "YYModel", package: "YYModel-SPM")
+            ],
+            path: "Sources/TuyaSmartMQTTChannelKitWrapper"
+        ),
+        .target(
+            name: "TuyaSmartNetworkKitWrapper",
+            dependencies: [
+                "TuyaSmartNetworkKit",
+                .product(name: "YYModel", package: "YYModel-SPM")
+            ],
+            path: "Sources/TuyaSmartNetworkKitWrapper"
+        ),
+        .target(
+            name: "TuyaSmartPairingCoreKitWrapper",
+            dependencies: [
+                "TuyaSmartPairingCoreKit",
+                .product(name: "YYModel", package: "YYModel-SPM")
+            ],
+            path: "Sources/TuyaSmartPairingCoreKitWrapper"
+        ),
+        .target(
+            name: "TuyaSmartQUICWrapper",
+            dependencies: [
+                "TuyaSmartQUIC",
+                .product(name: "YYModel", package: "YYModel-SPM")
+            ],
+            path: "Sources/TuyaSmartQUICWrapper"
+        ),
+        .target(
+            name: "TuyaSmartShareKitWrapper",
+            dependencies: [
+                "TuyaSmartShareKit",
+                .product(name: "YYModel", package: "YYModel-SPM")
+            ],
+            path: "Sources/TuyaSmartShareKitWrapper"
+        ),
+        .target(
+            name: "TuyaSmartSocketChannelKitWrapper",
+            dependencies: [
+                "TuyaSmartSocketChannelKit",
+                .product(name: "YYModel", package: "YYModel-SPM")
+            ],
+            path: "Sources/TuyaSmartSocketChannelKitWrapper"
+        ),
+        .target(
+            name: "TuyaSmartUtilWrapper",
+            dependencies: [
+                "TuyaSmartUtil",
+                .product(name: "YYModel", package: "YYModel-SPM")
+            ],
+            path: "Sources/TuyaSmartUtilWrapper"
+        ),
+        .target(
+            name: "TYMbedtlsWrapper",
+            dependencies: [
+                "TYMbedtls",
+                .product(name: "YYModel", package: "YYModel-SPM")
+            ],
+            path: "Sources/TYMbedtlsWrapper"
         )
     ]
 )

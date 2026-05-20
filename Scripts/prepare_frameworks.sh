@@ -231,38 +231,41 @@ fix_codesign() {
 }
 
 # Process each XCFramework
-XCFRAMEWORKS=(
-  "TuyaSmartActivatorKit"
-  "TuyaSmartActivatorCoreKit"
-  "TuyaSmartBaseKit"
-  "TuyaSmartDeviceKit"
-  "TuyaSmartDeviceCoreKit"
-  "TuyaSmartMQTTChannelKit"
-  "TuyaSmartNetworkKit"
-  "TuyaSmartPairingCoreKit"
-  "TuyaSmartQUIC"
-  "TuyaSmartShareKit"
-  "TuyaSmartSocketChannelKit"
-  "TuyaSmartUtil"
-  "TYMbedtls"
+# Dynamically discover all .xcframework bundles installed by CocoaPods
+echo "🔍 Discovering installed XCFrameworks..."
+XCFRAMEWORKS=()
+while IFS= read -r fw; do
+  XCFRAMEWORKS+=("$fw")
+done < <(
+  find "$TEMP_PODS_DIR/Pods" -type d -name "*.xcframework" \
+    -not -path "*/BCSymbolMaps/*" \
+    -not -path "*/*.dSYM/*" \
+    | xargs -I{} basename {} .xcframework \
+    | sort -u
 )
+
+if [ ${#XCFRAMEWORKS[@]} -eq 0 ]; then
+  echo "❌ No XCFrameworks found in Pods directory. Check pod install output."
+  exit 1
+fi
+
+echo "📋 Found ${#XCFRAMEWORKS[@]} XCFrameworks:"
+for fw in "${XCFRAMEWORKS[@]}"; do
+  echo "   • $fw"
+done
 
 for framework_name in "${XCFRAMEWORKS[@]}"; do
   echo ""
   echo "📦 Processing $framework_name..."
   
-  # Try multiple possible locations
-  XCFRAMEWORK_PATH=""
-  for possible_path in \
-    "$TEMP_PODS_DIR/Pods/$framework_name/Build/$framework_name.xcframework" \
-    "$TEMP_PODS_DIR/Pods/$framework_name/$framework_name.xcframework" \
-    "$TEMP_PODS_DIR/Pods/$framework_name/Framework/$framework_name.xcframework"; do
-    
-    if [ -d "$possible_path" ]; then
-      XCFRAMEWORK_PATH="$possible_path"
-      break
-    fi
-  done
+  # Locate the .xcframework dynamically — works regardless of vendor folder structure
+  XCFRAMEWORK_PATH=$(
+    find "$TEMP_PODS_DIR/Pods" -type d \
+      -name "${framework_name}.xcframework" \
+      -not -path "*/BCSymbolMaps/*" \
+      -not -path "*/*.dSYM/*" \
+      | head -1
+  )
   
   if [ -z "$XCFRAMEWORK_PATH" ] || [ ! -d "$XCFRAMEWORK_PATH" ]; then
     echo "   ⚠️  Warning: XCFramework not found, skipping..."
