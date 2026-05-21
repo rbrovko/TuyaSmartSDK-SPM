@@ -1,3 +1,2 @@
 // This is a wrapper target to enable SPM dependencies for binary framework
-// Import the binary framework and re-export it
-@_exported import TuyaSmartMQTTChannelKit
+// The binary framework is linked via target dependencies

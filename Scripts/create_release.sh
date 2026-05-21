@@ -188,11 +188,10 @@ for framework in "${FRAMEWORKS[@]}"; do
     WRAPPER_DIR="$REPO_ROOT/Sources/${framework}Wrapper"
     mkdir -p "$WRAPPER_DIR"
     
-    # Create a minimal Swift file to make the target valid
-    cat > "$WRAPPER_DIR/${framework}Wrapper.swift" << SWIFT_EOF
+    # Create an empty Swift file to make the target valid
+    cat > "$WRAPPER_DIR/${framework}Wrapper.swift" << 'SWIFT_EOF'
 // This is a wrapper target to enable SPM dependencies for binary framework
-// Import the binary framework and re-export it
-@_exported import $framework
+// The binary framework is linked via target dependencies
 SWIFT_EOF
     
     echo "  - Created: Sources/${framework}Wrapper/"
