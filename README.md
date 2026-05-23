@@ -49,7 +49,7 @@ This package wraps Tuya's CocoaPods-only SDK as binary XCFrameworks for use with
    ```
 3. Select version rule (recommend: **Up to Next Major Version**)
 4. Click **Add Package**
-5. Select **TuyaSmartActivatorKit-SMP** library and add to your target
+5. Select **TuyaSmartActivatorKit** library and add to your target
 
 #### Option 2: Package.swift
 
@@ -67,7 +67,7 @@ Then add to your target:
 .target(
     name: "YourApp",
     dependencies: [
-        .product(name: "TuyaSmartActivatorKit-SMP", package: "TuyaSmartSDK-SPM")
+        .product(name: "TuyaSmartActivatorKit", package: "TuyaSmartSDK-SPM")
     ]
 )
 ```
